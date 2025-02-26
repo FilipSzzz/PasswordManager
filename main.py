@@ -1,4 +1,3 @@
-
 from cryptography.fernet import Fernet
 from tabulate import tabulate
 import os
@@ -86,7 +85,6 @@ class PasswordManager:
         if not os.path.exists (self.USERS):
             print ("No accounts exist. Please create a new account.")
             return False
-
         try:
             with open (self.USERS, 'r') as f:
                 users = json.load (f)
@@ -114,9 +112,8 @@ class PasswordManager:
             print("2. Display all passwords")
             print("3. Delete password")
             print("4. Change password")
-            print("5. Encrypt password")
-            print("6. Decrypt password")
-            print("7. Exit")
+            print("5. Decrypt password")
+            print("6. Exit")
             choice = input("What would you like to do? ")
             if choice == '1':
                 self.add_password()
@@ -129,15 +126,10 @@ class PasswordManager:
             elif choice == '5':
                 pass
             elif choice == '6':
-                pass
-            elif choice == '7':
                 print("Thank you for using the Password Manager. Goodbye!")
                 exit()
 
     def delete_user(self):
-        if not os.path.exists (self.USERS):
-            print ("No accounts exist. Please create a new account.")
-            return False
 
         with open (self.USERS, 'r') as f:
             users = json.load (f)
@@ -181,7 +173,7 @@ class PasswordManager:
         password = input ("Enter password: ").strip ()
 
         try:
-            with open (self.current_path, 'a') as f:  # Użyj 'a' zamiast 'r+' aby uniknąć problemów
+            with open (self.current_path, 'a') as f:
                 f.write (f"\n{login}: {password}")
             print ("Password added successfully!")
             time.sleep (1)
@@ -194,14 +186,13 @@ class PasswordManager:
             with open (self.current_path, 'r') as f:
                 lines = f.read ().splitlines ()
 
-                # Pomijamy pierwszą linię z nagłówkiem
                 password_entries = lines[1:] if len (lines) > 1 else []
 
                 # Przygotowanie danych do tabeli
                 table_data = []
                 for entry in password_entries:
                     if ': ' in entry:
-                        login, password = entry.split (': ', 1)  # Dzielimy tylko na pierwszym wystąpieniu
+                        login, password = entry.split (': ', 1)
                         table_data.append ([login.strip (), password.strip ()])
 
                 if table_data:
@@ -221,15 +212,55 @@ class PasswordManager:
             print (f"\nError displaying passwords: {str (e)}")
 
     def delete_password(self):
-        choice = input("Write a login to delete a password: ")
 
+        ask = input("Enter login for password deletion: ")
         try:
-            with open (self.current_path, 'r') as f:
-                pass
+            with open(self.current_path, 'r') as f:
+                lines = f.readlines()
+            index_to_remove = -1
+            for i, line in enumerate(lines):
+                if line.startswith (ask + ":"):
+                    index_to_remove = i
+                    break
+            if index_to_remove != -1:
+                del lines[index_to_remove]
+
+                with open (self.current_path, 'w') as f:
+                    f.writelines (lines)
+
+                print ("Password deleted successfully!")
+            else:
+                print ("Login not found in password file.")
+
         except FileNotFoundError:
             print ("Password file not found!")
+
+        except Exception as e:
+            print (f"Error deleting password: {e}")
+
     def change_password(self):
-        pass
+        ask = input ("Enter a login for password change: ")
+        new_password = input ("Enter the new password: ")
+        try:
+            with open (self.current_path, 'r') as f:
+                lines = f.readlines ()
+            for i, line in enumerate (lines):
+                if line.startswith (ask + ":"):
+                    lines[i] = f"{ask}: {new_password}\n"
+                    break
+            else:
+                print ("Login not found in the password file.")
+                return False
+
+            with open (self.current_path, 'w') as f:
+                f.writelines (lines)
+
+            print ("Password updated successfully!")
+
+        except FileNotFoundError:
+            print ("Password file not found!")
+        except Exception as e:
+            print (f"Error changing password: {e}")
 
 
 if __name__ == "__main__":
