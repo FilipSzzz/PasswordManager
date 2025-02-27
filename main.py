@@ -1,4 +1,3 @@
-#szyfrowanie i odszyfrowywanie
 from cryptography.fernet import Fernet
 from tabulate import tabulate
 import base64
@@ -15,8 +14,11 @@ class PasswordManager:
         self.current_path = None
         self.key = None
         self.cipher = None
-        self.encrypted_password = None
+        self.encrypted_password = None #password to login
         self.decrypted_password = None
+        self.cipher_user = None
+        self.encrypted_password_user = None #passwords inside
+        self.decrypted_password_user = None
     def menu(self):
         while True:
             print("1. Login")
@@ -76,6 +78,7 @@ class PasswordManager:
             return False
 
         users = {}
+        # Changing into str
         key_str = base64.b64encode (key).decode ()
         encrypted_password_str = base64.b64encode (encrypted_password).decode ()
         if os.path.exists(self.USERS):
@@ -140,12 +143,16 @@ class PasswordManager:
 
             if choice == '1':
                 self.add_password()
+                print ("_________________________________")
             elif choice == '2':
                 self.display_password()
+                print ("_________________________________")
             elif choice == '3':
                 self.delete_password()
+                print ("_________________________________")
             elif choice == '4':
                 self.change_password()
+                print ("_________________________________")
             elif choice == '5':
                 print("Thank you for using the Password Manager. Goodbye!")
                 exit()
@@ -190,45 +197,56 @@ class PasswordManager:
 
     def add_password(self):
         if not self.current_path:
-            print("No current path. Please select a path first.")
+            print ("No current path. Please select a path first.")
             return False
 
-        login = input("Enter login: ").strip()
-        password = input("Enter password: ").strip()
+        login = input ("Enter login: ").strip ()
+        password = input ("Enter password: ").strip ()
+
+        # Generate a unique key for this password
+        key = self.generate_key ()
+        cipher = Fernet (key)
+
+        # Encrypt the password
+        encrypted_password = cipher.encrypt (password.encode ())
 
         try:
-            with open(self.current_path, 'a') as f:
-                f.write(f"\n{login}: {password}")
-
-            print("Password added successfully!")
-            time.sleep(1)
-            print("_________________________________")
-
+            with open (self.current_path, 'a') as f:
+                # Store the key and encrypted password
+                f.write (
+                    f"\n{login}: {base64.b64encode (key).decode ()}:{base64.b64encode (encrypted_password).decode ()}")
+            print ("Password added successfully!")
+            print ("_________________________________")
         except Exception as e:
-            print(f"Error adding password: {str(e)}")
+            print (f"Error adding password: {str (e)}")
 
     def display_password(self):
         try:
-            with open(self.current_path, 'r') as f:
-                lines = f.readlines()
+            with open (self.current_path, 'r') as f:
+                lines = f.readlines ()
 
             table_data = []
-
-            for line in lines[2:]:
+            for line in lines[2:]:  # Skip the first two lines
                 if ':' in line:
-                    login, password = line.strip().split(':', 1)
-                    table_data.append([login.strip(), password.strip()])
+                    login, key_b64, encrypted_password_b64 = line.strip ().split (':', 2)
+                    key = base64.b64decode (key_b64)
+                    encrypted_password = base64.b64decode (encrypted_password_b64)
+
+                    cipher = Fernet (key)
+                    decrypted_password = cipher.decrypt (encrypted_password).decode ()
+
+                    table_data.append ([login.strip (), decrypted_password])
 
             if table_data:
-                print("\nSaved passwords:")
-                print(tabulate(table_data, headers=['Login', 'Password'], tablefmt="fancy_grid"))
+                print ("\nSaved passwords:")
+                print (tabulate (table_data, headers=['Login', 'Password'], tablefmt="fancy_grid"))
             else:
-                print("No passwords saved.")
-
+                print ("No passwords saved.")
         except FileNotFoundError:
-            print("Password file not found!")
+            print ("Password file not found!")
         except Exception as e:
-            print(f"Error displaying passwords: {str(e)}")
+            print (f"Error displaying passwords: {str (e)}")
+
 
     def delete_password(self):
         ask = input("Enter login for password deletion: ")
@@ -296,6 +314,8 @@ class PasswordManager:
         except Exception as e:
             print(f"Error changing password: {e}")
 
+    def generate_key(self):
+        return Fernet.generate_key ()
 
 if __name__ == "__main__":
     password_manager = PasswordManager()
