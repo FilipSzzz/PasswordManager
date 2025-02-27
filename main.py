@@ -1,6 +1,7 @@
 #szyfrowanie i odszyfrowywanie
 from cryptography.fernet import Fernet
 from tabulate import tabulate
+import base64
 import os
 import time
 import json
@@ -8,12 +9,14 @@ import json
 class PasswordManager:
     USERS = 'users.json'
 
+
     def __init__(self):
-        self.key = Fernet.generate_key()
-        self.f = Fernet(self.key)
         self.current_user = None
         self.current_path = None
-
+        self.key = None
+        self.cipher = None
+        self.encrypted_password = None
+        self.decrypted_password = None
     def menu(self):
         while True:
             print("1. Login")
@@ -39,6 +42,13 @@ class PasswordManager:
         new_password = input("Password: ")
         path = input("Select path to save passwords (example: C:\\Users\\MyUser\\Documents): ")
         name_of_file = input("What is the name of the file: ")
+
+        #GENERATING KEY
+        key = Fernet.generate_key()
+        cipher = Fernet(key)
+
+        #ENCRYPT PASSWORD
+        encrypted_password = cipher.encrypt(new_password.encode())
 
         if not os.path.exists(path):
             try:
@@ -66,6 +76,8 @@ class PasswordManager:
             return False
 
         users = {}
+        key_str = base64.b64encode (key).decode ()
+        encrypted_password_str = base64.b64encode (encrypted_password).decode ()
         if os.path.exists(self.USERS):
             try:
                 with open(self.USERS, 'r') as f:
@@ -73,7 +85,7 @@ class PasswordManager:
             except json.JSONDecodeError:
                 users = {}
 
-        users[new_login] = {'password': new_password, 'file_path': file_path}
+        users[new_login] = {'key': key_str, 'password': encrypted_password_str, 'file_path': file_path}
 
         try:
             with open(self.USERS, 'w') as f:
@@ -96,17 +108,26 @@ class PasswordManager:
         login = input("Login: ")
         password = input("Password: ")
 
-        if login in users and users[login]['password'] == password:
-            print("Login successful!")
-            self.current_user = login
-            self.current_path = users[login]['file_path']
-            time.sleep(1)
-            print("_________________________________")
-            self.after_login()
-            return True
-        else:
-            print("Invalid login or password.")
-            return False
+        if login in users:
+
+            key = base64.b64decode(users[login]['key'])
+            encrypted_password = base64.b64decode(users[login]['password'])
+            cipher = Fernet(key)
+
+            decrypted_password = cipher.decrypt(encrypted_password).decode()
+
+            if password == decrypted_password:
+                print("Login successful!")
+                self.current_user = login
+                self.current_path = users[login]['file_path']
+                self.key = key
+                self.cipher = cipher
+                self.encrypted_password = encrypted_password
+                self.decrypted_password = decrypted_password
+                time.sleep(1)
+                print("_________________________________")
+                self.after_login()
+                return True
 
     def after_login(self):
         while True:
@@ -275,11 +296,6 @@ class PasswordManager:
         except Exception as e:
             print(f"Error changing password: {e}")
 
-    def encrypt(self, data):
-        pass
-
-    def decrypt(self, data):
-        pass
 
 if __name__ == "__main__":
     password_manager = PasswordManager()

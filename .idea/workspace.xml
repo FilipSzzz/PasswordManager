@@ -7,6 +7,7 @@
     <list default="true" id="0c927200-4c85-4102-ab8a-7616e1031ad7" name="Changes" comment="another functions">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users.json" beforeDir="false" afterPath="$PROJECT_DIR$/users.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,7 +125,8 @@
       <workItem from="1740573569433" duration="5132000" />
       <workItem from="1740578748761" duration="902000" />
       <workItem from="1740594222746" duration="5891000" />
-      <workItem from="1740600691963" duration="1395000" />
+      <workItem from="1740600691963" duration="1528000" />
+      <workItem from="1740644933173" duration="3098000" />
     </task>
     <task id="LOCAL-00001" summary="add delete_password()">
       <option name="closed" value="true" />
@@ -177,7 +179,7 @@
     <option name="LAST_COMMIT_MESSAGE" value="another functions" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/PASSWORD_MANAGER$main.coverage" NAME="main Coverage Results" MODIFIED="1740602329769" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PASSWORD_MANAGER$main.coverage" NAME="main Coverage Results" MODIFIED="1740648140223" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PASSWORD_MANAGER$window.coverage" NAME="window Coverage Results" MODIFIED="1740510848675" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PASSWORD_MANAGER$maks.coverage" NAME="maks Coverage Results" MODIFIED="1740516002576" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PASSWORD_MANAGER$test.coverage" NAME="test Coverage Results" MODIFIED="1740602094073" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
