@@ -164,34 +164,41 @@ class PasswordManager:
         ask = input("Are you sure you want to delete this account? (y/n) ").lower()
 
         if ask == 'y':
-            login = input("Login: ")
-            password = input("Password: ")
+            login = input ("Login: ")
+            password = input ("Password: ")
 
-            if login in users and users[login]['password'] == password:
-                try:
-                    # Usuwanie pliku z hasłami
-                    file_path = users[login]['file_path']
-                    if os.path.exists(file_path):
-                        os.remove(file_path)
-                        print(f"Password file '{file_path}' deleted successfully.")
-                    else:
-                        print("Password file not found.")
+            if login in users:
 
-                    # Usuwanie użytkownika z bazy
-                    del users[login]
+                key = base64.b64decode (users[login]['key'])
+                encrypted_password = base64.b64decode (users[login]['password'])
+                cipher = Fernet (key)
 
-                    with open(self.USERS, 'w') as f:
-                        json.dump(users, f, indent=4)
+                decrypted_password = cipher.decrypt (encrypted_password).decode ()
 
-                    print("Account and password file deleted successfully!")
+                if password == decrypted_password:
+                    try:
+                        # Usuwanie pliku z hasłami
+                        file_path = users[login]['file_path']
+                        if os.path.exists (file_path):
+                            os.remove (file_path)
+                            print (f"Password file '{file_path}' deleted successfully.")
+                        else:
+                            print ("Password file not found.")
 
-                except Exception as e:
-                    print(f"Error during deletion: {str(e)}")
-                    return False
+                        # Usuwanie użytkownika z bazy
+                        del users[login]
 
-            else:
-                print("Invalid login or password.")
+                        with open (self.USERS, 'w') as f:
+                            json.dump (users, f, indent=4)
 
+                        print ("Account and password file deleted successfully!")
+
+                    except Exception as e:
+                        print (f"Error during deletion: {str (e)}")
+                        return False
+
+                else:
+                    print ("Invalid login or password.")
         else:
             print("Account deletion cancelled.")
 
@@ -203,7 +210,6 @@ class PasswordManager:
         login = input ("Enter login: ").strip ()
         password = input ("Enter password: ").strip ()
 
-        # Generate a unique key for this password
         key = self.generate_key ()
         cipher = Fernet (key)
 
@@ -226,7 +232,7 @@ class PasswordManager:
                 lines = f.readlines ()
 
             table_data = []
-            for line in lines[2:]:  # Skip the first two lines
+            for line in lines[2:]:
                 if ':' in line:
                     login, key_b64, encrypted_password_b64 = line.strip ().split (':', 2)
                     key = base64.b64decode (key_b64)

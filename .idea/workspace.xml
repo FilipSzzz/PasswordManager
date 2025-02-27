@@ -125,7 +125,7 @@
       <workItem from="1740578748761" duration="902000" />
       <workItem from="1740594222746" duration="5891000" />
       <workItem from="1740600691963" duration="1528000" />
-      <workItem from="1740644933173" duration="6654000" />
+      <workItem from="1740644933173" duration="7941000" />
     </task>
     <task id="LOCAL-00001" summary="add delete_password()">
       <option name="closed" value="true" />
@@ -178,7 +178,7 @@
     <option name="LAST_COMMIT_MESSAGE" value="another functions" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/PASSWORD_MANAGER$main.coverage" NAME="main Coverage Results" MODIFIED="1740651994127" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PASSWORD_MANAGER$main.coverage" NAME="main Coverage Results" MODIFIED="1740653322819" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PASSWORD_MANAGER$window.coverage" NAME="window Coverage Results" MODIFIED="1740510848675" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PASSWORD_MANAGER$maks.coverage" NAME="maks Coverage Results" MODIFIED="1740516002576" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PASSWORD_MANAGER$test.coverage" NAME="test Coverage Results" MODIFIED="1740602094073" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
